@@ -49,52 +49,44 @@ function AdminPanel({
 
   return (
     <div className="container">
-    <div className="row">
 
-        {products.map((product) => (
-            <div
-                className="col-12"
-                key={product.id}
-            >
+  {products.map((product) => (
 
-                <div>
+    <div
+      className="col-12"
+      key={product.id}
+    >
 
-                    <Link
-                        to={`/products/${product.id}`}
-                    >
-                        <div className="row">
-                            <div className="col">
-                                {product.name}
-                            </div>
+      <div>
 
-                            <div className="col">
-                                ₹{product.price}
-                            </div>
-                        </div>
-                    </Link>
+        <Link
+          to={`/products/${product.id}`}
+        >
+          {product.name}
+        </Link>
 
-                    <button
-                        className="float-right"
-                        onClick={() =>
-                            deleteProduct(product.id)
-                        }
-                    >
-                        Delete
-                    </button>
+        <Link
+          className="float-right"
+          to={`/products/${product.id}?edit=true`}
+        >
+          Edit
+        </Link>
 
-                    <Link
-                        className="float-right"
-                        to={`/products/${product.id}?edit=true`}
-                    >
-                        Edit
-                    </Link>
+        <button
+          className="float-right"
+          onClick={() =>
+            deleteProduct(product.id)
+          }
+        >
+          Delete
+        </button>
 
-                </div>
-
-            </div>
-        ))}
+      </div>
 
     </div>
+
+  ))}
+
 </div>
   );
 }
