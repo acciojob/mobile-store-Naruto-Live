@@ -1,101 +1,102 @@
 import React, { useState } from "react";
 import {
-    useParams,
-    useLocation,
-    Link
+  useParams,
+  useLocation,
+  Link
 } from "react-router-dom";
 
 function ProductDetails({
-    products,
-    updateProduct
+  products,
+  updateProduct
 }) {
 
-    const { id } = useParams();
-    const location = useLocation();
+  const { id } = useParams();
+  const location = useLocation();
 
-    const product = products.find(
-        (item) => item.id === Number(id)
+  const product = products.find(
+    (item) => item.id === Number(id)
+  );
+
+  const searchParams =
+    new URLSearchParams(location.search);
+
+  const editMode =
+    searchParams.get("edit") === "true";
+
+  const [price, setPrice] = useState("");
+
+  if (!product) {
+    return (
+      <h2>Product not found</h2>
     );
+  }
 
-    const isEditing =
-        new URLSearchParams(location.search).get("edit") === "true";
+  const handleSave = () => {
 
-    const [price, setPrice] = useState("");
-
-    if (!product) {
-        return <h2>Product not found</h2>;
+    if (price === "") {
+      return;
     }
 
-    const handleSave = () => {
+    updateProduct({
+      ...product,
+      price: Number(price)
+    });
+  };
 
-        updateProduct({
-            ...product,
-            price: Number(price)
-        });
-    };
+  return (
+    <div>
 
-    return (
-        <div className="container">
+      <h1>
+        {product.name}
+      </h1>
 
-            <div className="row">
+      <img
+        src={product.image}
+        alt={product.name}
+      />
 
-                <div className="col-12">
+      <p>
+        {product.description}
+      </p>
 
-                    <h1>
-                        {product.name}
-                    </h1>
+      {!editMode && (
+        <h3>
+          {product.price}
+        </h3>
+      )}
 
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                    />
+      {editMode && (
+        <div>
 
-                    <p>
-                        {product.description}
-                    </p>
+          <input
+            className="form-control"
+            value={price}
+            placeholder={product.price}
+            onChange={(e) =>
+              setPrice(e.target.value)
+            }
+          />
 
-                    {!isEditing && (
-                        <h3>
-                            {product.price}
-                        </h3>
-                    )}
-
-                    {isEditing && (
-                        <div>
-
-                            <input
-                                className="form-control"
-                                value={price}
-                                placeholder={product.price}
-                                onChange={(e) =>
-                                    setPrice(e.target.value)
-                                }
-                            />
-
-                            <Link
-                                className="float-right"
-                                to={`/products/${product.id}`}
-                                onClick={handleSave}
-                            >
-                                Save
-                            </Link>
-
-                        </div>
-                    )}
-
-                    <Link
-                        className="btn"
-                        to="/"
-                    >
-                        Back
-                    </Link>
-
-                </div>
-
-            </div>
+          <Link
+            className="float-right"
+            to={`/products/${product.id}`}
+            onClick={handleSave}
+          >
+            Save
+          </Link>
 
         </div>
-    );
+      )}
+
+      <Link
+        className="btn"
+        to="/"
+      >
+        Back
+      </Link>
+
+    </div>
+  );
 }
 
 export default ProductDetails;

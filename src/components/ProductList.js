@@ -5,6 +5,8 @@ function ProductList({ products }) {
   return (
     <div className="container">
 
+      <h1>Mobile Store</h1>
+
       <div className="row">
 
         {products.map((product) => (
@@ -13,7 +15,9 @@ function ProductList({ products }) {
             key={product.id}
           >
 
-            <Link to={`/products/${product.id}`}>
+            <Link
+              to={`/products/${product.id}`}
+            >
 
               <div className="row">
 
@@ -25,11 +29,19 @@ function ProductList({ products }) {
                 </div>
 
                 <div className="col-8">
-                  <h3>{product.name}</h3>
+
+                  <h3>
+                    {product.name}
+                  </h3>
 
                   <p>
-                    Price: {product.price}
+                    {product.description}
                   </p>
+
+                  <h4>
+                    {product.price}
+                  </h4>
+
                 </div>
 
               </div>
