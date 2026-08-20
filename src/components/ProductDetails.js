@@ -1,135 +1,101 @@
 import React, { useState } from "react";
 import {
-  useParams,
-  Link
+    useParams,
+    useLocation,
+    Link
 } from "react-router-dom";
 
 function ProductDetails({
-  products,
-  updateProduct
+    products,
+    updateProduct
 }) {
-  const { id } = useParams();
 
-  const product = products.find(
-    (item) => item.id === Number(id)
-  );
+    const { id } = useParams();
+    const location = useLocation();
 
-  const [editing, setEditing] = useState(false);
+    const product = products.find(
+        (item) => item.id === Number(id)
+    );
 
-  const [form, setForm] = useState(null);
+    const isEditing =
+        new URLSearchParams(location.search).get("edit") === "true";
 
-  if (!product) {
-    return <h2>Product not found</h2>;
-  }
+    const [price, setPrice] = useState("");
 
-  const currentProduct = form || product;
+    if (!product) {
+        return <h2>Product not found</h2>;
+    }
 
-  const handleChange = (e) => {
-    setForm({
-      ...currentProduct,
-      [e.target.name]: e.target.value
-    });
-  };
+    const handleSave = () => {
 
-  const handleEdit = () => {
-    setForm(product);
-    setEditing(true);
-  };
+        updateProduct({
+            ...product,
+            price: Number(price)
+        });
+    };
 
-  const handleSave = () => {
+    return (
+        <div className="container">
 
-    updateProduct({
-      ...currentProduct,
-      price: Number(currentProduct.price)
-    });
+            <div className="row">
 
-    setEditing(false);
-  };
+                <div className="col-12">
 
-  return (
-    <div className="product-details">
+                    <h1>
+                        {product.name}
+                    </h1>
 
-      <h1>{product.name}</h1>
+                    <img
+                        src={product.image}
+                        alt={product.name}
+                    />
 
-      {editing ? (
+                    <p>
+                        {product.description}
+                    </p>
 
-        <div className="edit-form">
+                    {!isEditing && (
+                        <h3>
+                            {product.price}
+                        </h3>
+                    )}
 
-          <input
-            className="form-control"
-            name="name"
-            value={currentProduct.name}
-            onChange={handleChange}
-          />
+                    {isEditing && (
+                        <div>
 
-          <input
-            className="form-control"
-            name="description"
-            value={currentProduct.description}
-            onChange={handleChange}
-          />
+                            <input
+                                className="form-control"
+                                value={price}
+                                placeholder={product.price}
+                                onChange={(e) =>
+                                    setPrice(e.target.value)
+                                }
+                            />
 
-          <input
-            className="form-control"
-            name="image"
-            value={currentProduct.image}
-            onChange={handleChange}
-          />
+                            <Link
+                                className="float-right"
+                                to={`/products/${product.id}`}
+                                onClick={handleSave}
+                            >
+                                Save
+                            </Link>
 
-          <input
-            className="form-control"
-            name="price"
-            type="number"
-            value={currentProduct.price}
-            onChange={handleChange}
-          />
+                        </div>
+                    )}
 
-          <button
-            className="float-right"
-            onClick={handleSave}
-          >
-            Save
-          </button>
+                    <Link
+                        className="btn"
+                        to="/"
+                    >
+                        Back
+                    </Link>
+
+                </div>
+
+            </div>
 
         </div>
-
-      ) : (
-
-        <>
-          <img
-            className="detail-image"
-            src={product.image}
-            alt={product.name}
-          />
-
-          <p>
-            {product.description}
-          </p>
-
-          <h3>
-            Price: ₹{product.price}
-          </h3>
-
-        </>
-
-      )}
-
-      <button
-        className="btn"
-        onClick={handleEdit}
-      >
-        Edit
-      </button>
-
-      <Link
-        className="btn"
-        to="/"
-      >
-        Back
-      </Link>
-
-    </div>
-  );
+    );
 }
 
 export default ProductDetails;

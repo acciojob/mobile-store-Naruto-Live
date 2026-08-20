@@ -2,44 +2,58 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function ProductList({ products }) {
-  return (
-    <div className="store">
 
-      <h1>Mobile Store</h1>
+    return (
+        <div className="container">
 
-      <div className="product-grid">
+            <h1>Mobile Store</h1>
 
-        {products.map((product) => (
+            <div className="row">
 
-          <div
-            className="product-card"
-            key={product.id}
-          >
+                {products.map((product) => (
 
-            <img
-              src={product.image}
-              alt={product.name}
-            />
+                    <div
+                        className="col-12 col-md-6"
+                        key={product.id}
+                    >
 
-            <Link
-              className="product-link"
-              to={`/products/${product.id}`}
-            >
-              {product.name}
-            </Link>
+                        <Link
+                            to={`/products/${product.id}`}
+                        >
 
-            <p>
-              Price: ₹{product.price}
-            </p>
+                            <div className="row">
 
-          </div>
+                                <div className="col-4">
+                                    <img
+                                        src={product.image}
+                                        alt={product.name}
+                                    />
+                                </div>
 
-        ))}
+                                <div className="col-8">
 
-      </div>
+                                    <h3>
+                                        {product.name}
+                                    </h3>
 
-    </div>
-  );
+                                    <p>
+                                        Price: {product.price}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </Link>
+
+                    </div>
+
+                ))}
+
+            </div>
+
+        </div>
+    );
 }
 
 export default ProductList;

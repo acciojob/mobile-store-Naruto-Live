@@ -123,26 +123,26 @@ function App() {
 
       <Switch>
 
-        <Route exact path="/">
-          <ProductList products={products} />
-        </Route>
+    <Route exact path="/">
+        <ProductList products={products} />
+    </Route>
 
-        <Route path="/products/:id">
-          <ProductDetails
+    <Route path="/products/:id">
+        <ProductDetails
             products={products}
             updateProduct={updateProduct}
-          />
-        </Route>
+        />
+    </Route>
 
-        <Route path="/admin">
-          <AdminPanel
+    <Route path="/admin">
+        <AdminPanel
             products={products}
             addProduct={addProduct}
             deleteProduct={deleteProduct}
-          />
-        </Route>
+        />
+    </Route>
 
-      </Switch>
+</Switch>
 
     </BrowserRouter>
   );
