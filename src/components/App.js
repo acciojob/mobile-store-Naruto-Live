@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   BrowserRouter,
-  Routes,
+  Switch,
   Route,
   Link
 } from "react-router-dom";
@@ -10,133 +10,149 @@ import ProductList from "./ProductList";
 import ProductDetails from "./ProductDetails";
 import AdminPanel from "./AdminPanel";
 
+import "./../styles/App.css";
+
 const initialProducts = [
   {
     id: 1,
-    name: "iPhone 13",
-    price: 59999,
-    description: "Apple iPhone 13",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy S6 64GB Black",
+    price: 16303,
+    description: "Samsung Galaxy S6 with 64GB storage.",
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300"
   },
   {
     id: 2,
-    name: "Samsung Galaxy S21",
-    price: 49999,
-    description: "Samsung Galaxy S21",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy S9 64GB Black",
+    price: 20888,
+    description: "Samsung Galaxy S9 with 64GB storage.",
+    image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300"
   },
   {
     id: 3,
-    name: "OnePlus 9",
-    price: 39999,
-    description: "OnePlus 9",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy S8+ 64GB Black",
+    price: 19701,
+    description: "Samsung Galaxy S8 Plus with 64GB storage.",
+    image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=300"
   },
   {
     id: 4,
-    name: "Google Pixel 6",
-    price: 44999,
-    description: "Google Pixel 6",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy S9+ 64GB Black",
+    price: 49999,
+    description: "Samsung Galaxy S9 Plus with 64GB storage.",
+    image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=300"
   },
   {
     id: 5,
-    name: "Xiaomi Mi 11",
-    price: 29999,
-    description: "Xiaomi Mi 11",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy Note 9 128GB Midnight Black",
+    price: 29768,
+    description: "Samsung Galaxy Note 9 with 128GB storage.",
+    image: "https://images.unsplash.com/photo-1533228100845-08145b01de14?w=300"
   },
   {
     id: 6,
-    name: "Realme GT",
-    price: 25999,
-    description: "Realme GT",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy Note 8 64GB Black",
+    price: 22771,
+    description: "Samsung Galaxy Note 8 with 64GB storage.",
+    image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=300"
   },
   {
     id: 7,
-    name: "Vivo X60",
-    price: 34999,
-    description: "Vivo X60",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy S10 128GB",
+    price: 39999,
+    description: "Samsung Galaxy S10 with 128GB storage.",
+    image: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=300"
   },
   {
     id: 8,
-    name: "Oppo Reno",
-    price: 27999,
-    description: "Oppo Reno",
-    image: "https://via.placeholder.com/200"
+    name: "Samsung Galaxy S20 128GB",
+    price: 44999,
+    description: "Samsung Galaxy S20 with 128GB storage.",
+    image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=300"
   }
 ];
 
 function App() {
-  const [products, setProducts] = useState(initialProducts);
+
+  const [products, setProducts] =
+    useState(initialProducts);
 
   const addProduct = (product) => {
-    setProducts([
-      ...products,
+
+    setProducts((previousProducts) => [
+      ...previousProducts,
       {
         ...product,
         id: Date.now()
       }
     ]);
+
   };
 
   const deleteProduct = (id) => {
-    setProducts(
-      products.filter((product) => product.id !== id)
+
+    setProducts((previousProducts) =>
+      previousProducts.filter(
+        (product) => product.id !== id
+      )
     );
+
   };
 
   const updateProduct = (updatedProduct) => {
-    setProducts(
-      products.map((product) =>
+
+    setProducts((previousProducts) =>
+      previousProducts.map((product) =>
         product.id === updatedProduct.id
           ? updatedProduct
           : product
       )
     );
+
   };
 
   return (
+
     <BrowserRouter>
 
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/admin">Admin Panel</Link>
+      <nav className="navbar">
+
+        <Link to="/">
+          HOME
+        </Link>
+
+        <Link to="/admin">
+          ADMIN
+        </Link>
+
       </nav>
 
-      <Routes>
+      <Switch>
 
-        <Route
-          path="/"
-          element={
-            <ProductList products={products} />
-          }
-        />
+        <Route exact path="/">
+          <ProductList
+            products={products}
+          />
+        </Route>
 
-        <Route
-          path="/products/:id"
-          element={
-            <ProductDetails products={products} />
-          }
-        />
+        <Route path="/products/:id">
+          <ProductDetails
+            products={products}
+            updateProduct={updateProduct}
+          />
+        </Route>
 
-        <Route
-          path="/admin"
-          element={
-            <AdminPanel
-              products={products}
-              addProduct={addProduct}
-              deleteProduct={deleteProduct}
-              updateProduct={updateProduct}
-            />
-          }
-        />
+        <Route path="/admin">
+          <AdminPanel
+            products={products}
+            addProduct={addProduct}
+            deleteProduct={deleteProduct}
+          />
+        </Route>
 
-      </Routes>
+      </Switch>
 
     </BrowserRouter>
+
   );
 }
 

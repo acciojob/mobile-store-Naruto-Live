@@ -1,46 +1,67 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function AdminPanel({ products, addProduct, deleteProduct, updateProduct }) {
+function AdminPanel({
+  products,
+  addProduct,
+  deleteProduct
+}) {
+
   const [form, setForm] = useState({
     name: "",
     description: "",
     image: "",
-    price: "",
+    price: ""
   });
 
-  const handleChange = (e) => {
+  const handleChange = (event) => {
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [event.target.name]:
+        event.target.value
     });
+
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
 
-    if (!form.name || !form.description || !form.image || !form.price) {
+    event.preventDefault();
+
+    if (
+      !form.name ||
+      !form.description ||
+      !form.image ||
+      !form.price
+    ) {
       return;
     }
 
     addProduct({
-      ...form,
-      price: Number(form.price),
+      name: form.name,
+      description: form.description,
+      image: form.image,
+      price: Number(form.price)
     });
 
     setForm({
       name: "",
       description: "",
       image: "",
-      price: "",
+      price: ""
     });
+
   };
 
   return (
-    <div>
-      <h1>Admin Panel</h1>
+    <div className="admin-panel">
+
+      <h1>
+        Admin Panel
+      </h1>
 
       <form onSubmit={handleSubmit}>
+
         <input
           className="form-control"
           name="name"
@@ -74,20 +95,34 @@ function AdminPanel({ products, addProduct, deleteProduct, updateProduct }) {
           onChange={handleChange}
         />
 
-        <button type="submit">Add</button>
+        <button type="submit">
+          Add
+        </button>
+
       </form>
 
-      <h2>Products: {products.length}</h2>
+      <h2>
+        Products: {products.length}
+      </h2>
 
       {products.map((product) => (
-        <div key={product.id}>
-          <Link to={`/products/${product.id}`}>
-            <h3>{product.name}</h3>
+
+        <div
+          key={product.id}
+          className="admin-product"
+        >
+
+          <Link
+            to={`/products/${product.id}`}
+          >
+            {product.name}
           </Link>
 
           <button
             className="float-right"
-            onClick={() => deleteProduct(product.id)}
+            onClick={() =>
+              deleteProduct(product.id)
+            }
           >
             Delete
           </button>
@@ -98,8 +133,11 @@ function AdminPanel({ products, addProduct, deleteProduct, updateProduct }) {
           >
             Edit
           </Link>
+
         </div>
+
       ))}
+
     </div>
   );
 }
