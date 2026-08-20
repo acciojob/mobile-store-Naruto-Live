@@ -1,47 +1,38 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function AdminPanel({
-  products,
-  addProduct,
-  deleteProduct
-}) {
+function AdminPanel({ products, addProduct, deleteProduct, updateProduct }) {
   const [form, setForm] = useState({
     name: "",
     description: "",
     image: "",
-    price: ""
+    price: "",
   });
 
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !form.name ||
-      !form.description ||
-      !form.image ||
-      !form.price
-    ) {
+    if (!form.name || !form.description || !form.image || !form.price) {
       return;
     }
 
     addProduct({
       ...form,
-      price: Number(form.price)
+      price: Number(form.price),
     });
 
     setForm({
       name: "",
       description: "",
       image: "",
-      price: ""
+      price: "",
     });
   };
 
@@ -83,9 +74,7 @@ function AdminPanel({
           onChange={handleChange}
         />
 
-        <button type="submit">
-          Add
-        </button>
+        <button type="submit">Add</button>
       </form>
 
       <h2>Products: {products.length}</h2>
@@ -102,6 +91,13 @@ function AdminPanel({
           >
             Delete
           </button>
+
+          <Link
+            className="float-right"
+            to={`/products/${product.id}?edit=true`}
+          >
+            Edit
+          </Link>
         </div>
       ))}
     </div>
