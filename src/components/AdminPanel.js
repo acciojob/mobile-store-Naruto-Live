@@ -14,19 +14,16 @@ function AdminPanel({
     price: ""
   });
 
-  const handleChange = (event) => {
-
+  const handleChange = (e) => {
     setForm({
       ...form,
-      [event.target.name]:
-        event.target.value
+      [e.target.name]: e.target.value
     });
-
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (e) => {
 
-    event.preventDefault();
+    e.preventDefault();
 
     if (
       !form.name ||
@@ -38,9 +35,7 @@ function AdminPanel({
     }
 
     addProduct({
-      name: form.name,
-      description: form.description,
-      image: form.image,
+      ...form,
       price: Number(form.price)
     });
 
@@ -50,15 +45,12 @@ function AdminPanel({
       image: "",
       price: ""
     });
-
   };
 
   return (
     <div className="admin-panel">
 
-      <h1>
-        Admin Panel
-      </h1>
+      <h1>Admin Panel</h1>
 
       <form onSubmit={handleSubmit}>
 
@@ -108,8 +100,8 @@ function AdminPanel({
       {products.map((product) => (
 
         <div
-          key={product.id}
           className="admin-product"
+          key={product.id}
         >
 
           <Link
@@ -126,13 +118,6 @@ function AdminPanel({
           >
             Delete
           </button>
-
-          <Link
-            className="float-right"
-            to={`/products/${product.id}?edit=true`}
-          >
-            Edit
-          </Link>
 
         </div>
 

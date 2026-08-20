@@ -22,8 +22,8 @@ function ProductList({ products }) {
             />
 
             <Link
-              to={`/products/${product.id}`}
               className="product-link"
+              to={`/products/${product.id}`}
             >
               {product.name}
             </Link>
@@ -31,13 +31,6 @@ function ProductList({ products }) {
             <p>
               Price: ₹{product.price}
             </p>
-
-            <Link
-              className="buy-btn"
-              to={`/products/${product.id}`}
-            >
-              Buy
-            </Link>
 
           </div>
 

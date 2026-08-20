@@ -1,90 +1,78 @@
 import React, { useState } from "react";
 import {
   useParams,
-  Link,
-  useLocation
+  Link
 } from "react-router-dom";
 
 function ProductDetails({
   products,
   updateProduct
 }) {
-
   const { id } = useParams();
-
-  const location = useLocation();
 
   const product = products.find(
     (item) => item.id === Number(id)
   );
 
-  const editMode =
-    new URLSearchParams(location.search).get("edit") === "true";
+  const [editing, setEditing] = useState(false);
 
   const [form, setForm] = useState(null);
 
   if (!product) {
-    return (
-      <h2>
-        Product not found
-      </h2>
-    );
+    return <h2>Product not found</h2>;
   }
 
-  const currentForm = form || product;
+  const currentProduct = form || product;
 
-  const handleChange = (event) => {
-
+  const handleChange = (e) => {
     setForm({
-      ...currentForm,
-      [event.target.name]:
-        event.target.name === "price"
-          ? event.target.value
-          : event.target.value
+      ...currentProduct,
+      [e.target.name]: e.target.value
     });
+  };
 
+  const handleEdit = () => {
+    setForm(product);
+    setEditing(true);
   };
 
   const handleSave = () => {
 
     updateProduct({
-      ...currentForm,
-      price: Number(currentForm.price)
+      ...currentProduct,
+      price: Number(currentProduct.price)
     });
 
-    window.history.back();
-
+    setEditing(false);
   };
 
   return (
     <div className="product-details">
 
-      <h1>
-        {product.name}
-      </h1>
+      <h1>{product.name}</h1>
 
-      {editMode ? (
+      {editing ? (
 
         <div className="edit-form">
 
           <input
             className="form-control"
             name="name"
-            value={currentForm.name}
+            value={currentProduct.name}
             onChange={handleChange}
           />
 
           <input
             className="form-control"
             name="description"
-            value={currentForm.description}
+            value={currentProduct.description}
             onChange={handleChange}
           />
 
           <input
             className="form-control"
             name="image"
-            value={currentForm.image}
+            value={currentProduct.image}
             onChange={handleChange}
           />
 
@@ -92,7 +80,7 @@ function ProductDetails({
             className="form-control"
             name="price"
             type="number"
-            value={currentForm.price}
+            value={currentProduct.price}
             onChange={handleChange}
           />
 
@@ -109,9 +97,9 @@ function ProductDetails({
 
         <>
           <img
+            className="detail-image"
             src={product.image}
             alt={product.name}
-            className="detail-image"
           />
 
           <p>
@@ -126,7 +114,12 @@ function ProductDetails({
 
       )}
 
-      <br />
+      <button
+        className="btn"
+        onClick={handleEdit}
+      >
+        Edit
+      </button>
 
       <Link
         className="btn"
