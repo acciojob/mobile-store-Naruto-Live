@@ -6,17 +6,13 @@ function ProductList({ products }) {
     <div>
       <h1>Mobile Store</h1>
 
-      <div>
-        {products.map((product) => (
-          <div key={product.id}>
-            <Link to={`/products/${product.id}`}>
-              <h2>{product.name}</h2>
-            </Link>
-
-            <p>₹{product.price}</p>
-          </div>
-        ))}
-      </div>
+      {products.map((product) => (
+        <div key={product.id}>
+          <Link to={`/products/${product.id}`}>
+            {product.name}
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }
