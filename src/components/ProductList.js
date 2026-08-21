@@ -56,5 +56,4 @@ function ProductList({ products }) {
     </div>
   );
 }
-
 export default ProductList;
