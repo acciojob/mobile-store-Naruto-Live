@@ -5,11 +5,7 @@ import {
   Link
 } from "react-router-dom";
 
-function ProductDetails({
-  products,
-  updateProduct
-}) {
-
+function ProductDetails({ products, updateProduct }) {
   const { id } = useParams();
   const location = useLocation();
 
@@ -17,22 +13,22 @@ function ProductDetails({
     (item) => item.id === Number(id)
   );
 
-  const searchParams =
-    new URLSearchParams(location.search);
+  const searchParams = new URLSearchParams(
+    location.search
+  );
 
   const editMode =
     searchParams.get("edit") === "true";
 
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(
+    product ? String(product.price) : ""
+  );
 
   if (!product) {
-    return (
-      <h2>Product not found</h2>
-    );
+    return <h2>Product not found</h2>;
   }
 
   const handleSave = () => {
-
     if (price === "") {
       return;
     }
@@ -45,33 +41,24 @@ function ProductDetails({
 
   return (
     <div>
-
-      <h1>
-        {product.name}
-      </h1>
+      <h1>{product.name}</h1>
 
       <img
         src={product.image}
         alt={product.name}
       />
 
-      <p>
-        {product.description}
-      </p>
+      <p>{product.description}</p>
 
       {!editMode && (
-        <h3>
-          {product.price}
-        </h3>
+        <h3>{product.price}</h3>
       )}
 
       {editMode && (
         <div>
-
           <input
             className="form-control"
             value={price}
-            placeholder={product.price}
             onChange={(e) =>
               setPrice(e.target.value)
             }
@@ -84,7 +71,6 @@ function ProductDetails({
           >
             Save
           </Link>
-
         </div>
       )}
 
@@ -94,7 +80,6 @@ function ProductDetails({
       >
         Back
       </Link>
-
     </div>
   );
 }

@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function AdminPanel({
-  products,
-  addProduct,
-  deleteProduct
-}) {
-
+function AdminPanel({ products, addProduct, deleteProduct }) {
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -50,11 +45,9 @@ function AdminPanel({
 
   return (
     <div>
-
       <h1>Admin Panel</h1>
 
       <form onSubmit={handleSubmit}>
-
         <input
           className="form-control"
           name="name"
@@ -91,7 +84,6 @@ function AdminPanel({
         <button type="submit">
           Add
         </button>
-
       </form>
 
       <h2>
@@ -99,27 +91,19 @@ function AdminPanel({
       </h2>
 
       <div className="row">
-
         {products.map((product) => (
-
           <div
             className="col-12"
             key={product.id}
           >
-
             <div>
-
-              <Link
-                to={`/products/${product.id}`}
-              >
+              <Link to={`/products/${product.id}`}>
                 {product.name}
               </Link>
 
               <button
                 className="float-right"
-                onClick={() =>
-                  deleteProduct(product.id)
-                }
+                onClick={() => deleteProduct(product.id)}
               >
                 Delete
               </button>
@@ -130,15 +114,10 @@ function AdminPanel({
               >
                 Edit
               </Link>
-
             </div>
-
           </div>
-
         ))}
-
       </div>
-
     </div>
   );
 }
