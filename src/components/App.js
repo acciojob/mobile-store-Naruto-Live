@@ -9,7 +9,7 @@ import {
 import ProductList from "./ProductList";
 import ProductDetails from "./ProductDetails";
 import AdminPanel from "./AdminPanel";
-import ".././styles/App.css";
+import "./App.css";
 
 const initialProducts = [
   {
