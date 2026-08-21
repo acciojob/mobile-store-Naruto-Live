@@ -7,27 +7,21 @@ function AdminPanel({
   deleteProduct
 }) {
   const [name, setName] = useState("");
-  const [description, setDescription] =
-    useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    if (
-      !name ||
-      !description ||
-      !image ||
-      !price
-    ) {
+    if (!name || !description || !image || !price) {
       return;
     }
 
     addProduct({
-      name,
-      description,
-      image,
+      name: name,
+      description: description,
+      image: image,
       price: Number(price)
     });
 
@@ -42,66 +36,53 @@ function AdminPanel({
 
       <h1>Admin Panel</h1>
 
-      <div className="admin-form">
+      <form onSubmit={handleSubmit} className="admin-form">
 
-        <h2>Add Product</h2>
+        <input
+          className="form-control"
+          type="text"
+          placeholder="Product Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-        <form onSubmit={handleSubmit}>
+        <input
+          className="form-control"
+          type="text"
+          placeholder="Product Description"
+          value={description}
+          onChange={(e) =>
+            setDescription(e.target.value)
+          }
+        />
 
-          <input
-            className="form-control"
-            placeholder="Product Name"
-            value={name}
-            onChange={(e) =>
-              setName(e.target.value)
-            }
-          />
+        <input
+          className="form-control"
+          type="text"
+          placeholder="Image URL"
+          value={image}
+          onChange={(e) =>
+            setImage(e.target.value)
+          }
+        />
 
-          <input
-            className="form-control"
-            placeholder="Product Description"
-            value={description}
-            onChange={(e) =>
-              setDescription(
-                e.target.value
-              )
-            }
-          />
+        <input
+          className="form-control"
+          type="number"
+          placeholder="Price"
+          value={price}
+          onChange={(e) =>
+            setPrice(e.target.value)
+          }
+        />
 
-          <input
-            className="form-control"
-            placeholder="Image URL"
-            value={image}
-            onChange={(e) =>
-              setImage(e.target.value)
-            }
-          />
+        <button type="submit">
+          Add
+        </button>
 
-          <input
-            className="form-control"
-            placeholder="Price"
-            type="number"
-            value={price}
-            onChange={(e) =>
-              setPrice(e.target.value)
-            }
-          />
+      </form>
 
-          <button
-            type="submit"
-            className="btn"
-          >
-            Add
-          </button>
-
-        </form>
-      </div>
-
-      <h2>
-        Products ({products.length})
-      </h2>
-
-      <div className="admin-products">
+      <div className="admin-list">
 
         {products.map((product) => (
           <div
@@ -109,33 +90,35 @@ function AdminPanel({
             key={product.id}
           >
 
-            <div>
-              <h3>{product.name}</h3>
+            <div className="row">
 
-              <p>
-                ₹{product.price}
-              </p>
-            </div>
+              <div className="product-info">
+                <h3>{product.name}</h3>
 
-            <div className="admin-actions">
+                <p>
+                  ₹{product.price}
+                </p>
+              </div>
 
-              <Link
-                to={`/products/${product.id}`}
-                className="float-right btn"
-              >
-                Edit
-              </Link>
+              <div className="product-actions">
 
-              <button
-                className="float-right btn danger"
-                onClick={() =>
-                  deleteProduct(
-                    product.id
-                  )
-                }
-              >
-                Delete
-              </button>
+                <Link
+                  to={`/products/${product.id}`}
+                  className="edit-link"
+                >
+                  Edit
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    deleteProduct(product.id)
+                  }
+                >
+                  Delete
+                </button>
+
+              </div>
 
             </div>
 
