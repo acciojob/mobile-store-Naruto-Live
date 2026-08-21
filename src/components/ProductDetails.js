@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+
 import {
   useParams,
-  Link,
   useHistory
 } from "react-router-dom";
 
@@ -16,8 +16,7 @@ function ProductDetails({
     (item) => item.id === Number(id)
   );
 
-  const [editing, setEditing] =
-    useState(false);
+  const [editing, setEditing] = useState(false);
 
   const [name, setName] = useState(
     product ? product.name : ""
@@ -41,25 +40,33 @@ function ProductDetails({
       <div className="container">
         <h1>Product Not Found</h1>
 
-        <Link
-          to="/"
+        <button
           className="btn"
+          onClick={() => history.push("/")}
         >
           Back
-        </Link>
+        </button>
       </div>
     );
   }
 
-  const saveChanges = (event) => {
+  const handleEdit = () => {
+    setName(product.name);
+    setPrice(product.price);
+    setDescription(product.description);
+    setImage(product.image);
+    setEditing(true);
+  };
+
+  const handleSave = (event) => {
     event.preventDefault();
 
     updateProduct({
       id: product.id,
-      name,
+      name: name,
       price: Number(price),
-      description,
-      image
+      description: description,
+      image: image
     });
 
     setEditing(false);
@@ -89,54 +96,59 @@ function ProductDetails({
 
             <button
               className="btn"
-              onClick={() =>
-                history.push("/")
-              }
+              onClick={() => history.push("/")}
             >
               Back
+            </button>
+
+            <button
+              className="btn"
+              onClick={handleEdit}
+            >
+              Edit
             </button>
           </>
         ) : (
           <form
-            onSubmit={saveChanges}
             className="edit-form"
+            onSubmit={handleSave}
           >
 
             <input
               className="form-control"
+              type="text"
               value={name}
-              onChange={(e) =>
-                setName(e.target.value)
+              onChange={(event) =>
+                setName(event.target.value)
               }
               placeholder="Product Name"
             />
 
             <input
               className="form-control"
+              type="number"
               value={price}
-              onChange={(e) =>
-                setPrice(e.target.value)
+              onChange={(event) =>
+                setPrice(event.target.value)
               }
               placeholder="Price"
-              type="number"
             />
 
             <textarea
               className="form-control"
               value={description}
-              onChange={(e) =>
-                setDescription(
-                  e.target.value
-                )
+              onChange={(event) =>
+                setDescription(event.target.value)
               }
               placeholder="Description"
             />
 
             <input
               className="form-control"
+              type="text"
               value={image}
-              onChange={(e) =>
-                setImage(e.target.value)
+              onChange={(event) =>
+                setImage(event.target.value)
               }
               placeholder="Image URL"
             />

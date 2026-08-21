@@ -14,6 +14,7 @@ function ProductList({ products }) {
             className="product-card"
             key={product.id}
           >
+
             <img
               src={product.image}
               alt={product.name}
@@ -33,6 +34,7 @@ function ProductList({ products }) {
             >
               View Details
             </Link>
+
           </div>
         ))}
 

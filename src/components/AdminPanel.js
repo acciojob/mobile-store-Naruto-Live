@@ -11,17 +11,22 @@ function AdminPanel({
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    if (!name || !description || !image || !price) {
+    if (
+      name.trim() === "" ||
+      description.trim() === "" ||
+      image.trim() === "" ||
+      price === ""
+    ) {
       return;
     }
 
     addProduct({
-      name: name,
-      description: description,
-      image: image,
+      name: name.trim(),
+      description: description.trim(),
+      image: image.trim(),
       price: Number(price)
     });
 
@@ -36,14 +41,19 @@ function AdminPanel({
 
       <h1>Admin Panel</h1>
 
-      <form onSubmit={handleSubmit} className="admin-form">
+      <form
+        className="admin-form"
+        onSubmit={handleSubmit}
+      >
 
         <input
           className="form-control"
           type="text"
           placeholder="Product Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(event) =>
+            setName(event.target.value)
+          }
         />
 
         <input
@@ -51,8 +61,8 @@ function AdminPanel({
           type="text"
           placeholder="Product Description"
           value={description}
-          onChange={(e) =>
-            setDescription(e.target.value)
+          onChange={(event) =>
+            setDescription(event.target.value)
           }
         />
 
@@ -61,8 +71,8 @@ function AdminPanel({
           type="text"
           placeholder="Image URL"
           value={image}
-          onChange={(e) =>
-            setImage(e.target.value)
+          onChange={(event) =>
+            setImage(event.target.value)
           }
         />
 
@@ -71,8 +81,8 @@ function AdminPanel({
           type="number"
           placeholder="Price"
           value={price}
-          onChange={(e) =>
-            setPrice(e.target.value)
+          onChange={(event) =>
+            setPrice(event.target.value)
           }
         />
 
@@ -90,35 +100,52 @@ function AdminPanel({
             key={product.id}
           >
 
-            <div className="row">
+            {/* FIRST CHILD */}
+            <div className="admin-product-info">
 
-              <div className="product-info">
-                <h3>{product.name}</h3>
+              <img
+                src={product.image}
+                alt={product.name}
+              />
+
+              <div>
+                <h2>{product.name}</h2>
 
                 <p>
+                  {product.description}
+                </p>
+
+                <p className="price">
                   ₹{product.price}
                 </p>
               </div>
 
-              <div className="product-actions">
+            </div>
 
-                <Link
-                  to={`/products/${product.id}`}
-                  className="edit-link"
-                >
-                  Edit
-                </Link>
+            {/* SECOND CHILD - DELETE */}
+            <div className="admin-delete">
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    deleteProduct(product.id)
-                  }
-                >
-                  Delete
-                </button>
+              <button
+                type="button"
+                className="float-right"
+                onClick={() =>
+                  deleteProduct(product.id)
+                }
+              >
+                Delete
+              </button>
 
-              </div>
+            </div>
+
+            {/* THIRD CHILD - EDIT */}
+            <div className="admin-edit">
+
+              <Link
+                className="float-right"
+                to={`/products/${product.id}`}
+              >
+                Edit
+              </Link>
 
             </div>
 
