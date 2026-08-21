@@ -5,55 +5,40 @@ function ProductList({ products }) {
   return (
     <div className="container">
 
-      <h1>Mobile Store</h1>
+      <h1>Online Mobile Store</h1>
 
-      <div className="row">
+      <div className="product-grid">
 
         {products.map((product) => (
           <div
-            className="col-12"
+            className="product-card"
             key={product.id}
           >
+            <img
+              src={product.image}
+              alt={product.name}
+            />
+
+            <h2>{product.name}</h2>
+
+            <p>{product.description}</p>
+
+            <p className="price">
+              ₹{product.price}
+            </p>
 
             <Link
               to={`/products/${product.id}`}
+              className="btn"
             >
-
-              <div className="row">
-
-                <div className="col-4">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                  />
-                </div>
-
-                <div className="col-8">
-
-                  <h3>
-                    {product.name}
-                  </h3>
-
-                  <p>
-                    {product.description}
-                  </p>
-
-                  <h4>
-                    {product.price}
-                  </h4>
-
-                </div>
-
-              </div>
-
+              View Details
             </Link>
-
           </div>
         ))}
 
       </div>
-
     </div>
   );
 }
+
 export default ProductList;

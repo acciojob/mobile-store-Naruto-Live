@@ -1,123 +1,149 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function AdminPanel({ products, addProduct, deleteProduct }) {
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    image: "",
-    price: ""
-  });
+function AdminPanel({
+  products,
+  addProduct,
+  deleteProduct
+}) {
+  const [name, setName] = useState("");
+  const [description, setDescription] =
+    useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState("");
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
     if (
-      !form.name ||
-      !form.description ||
-      !form.image ||
-      !form.price
+      !name ||
+      !description ||
+      !image ||
+      !price
     ) {
       return;
     }
 
     addProduct({
-      name: form.name,
-      description: form.description,
-      image: form.image,
-      price: Number(form.price)
+      name,
+      description,
+      image,
+      price: Number(price)
     });
 
-    setForm({
-      name: "",
-      description: "",
-      image: "",
-      price: ""
-    });
+    setName("");
+    setDescription("");
+    setImage("");
+    setPrice("");
   };
 
   return (
-    <div>
+    <div className="container">
+
       <h1>Admin Panel</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          className="form-control"
-          name="name"
-          placeholder="Product name"
-          value={form.name}
-          onChange={handleChange}
-        />
+      <div className="admin-form">
 
-        <input
-          className="form-control"
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-        />
+        <h2>Add Product</h2>
 
-        <input
-          className="form-control"
-          name="image"
-          placeholder="Image URL"
-          value={form.image}
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit}>
 
-        <input
-          className="form-control"
-          name="price"
-          type="number"
-          placeholder="Price"
-          value={form.price}
-          onChange={handleChange}
-        />
+          <input
+            className="form-control"
+            placeholder="Product Name"
+            value={name}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
+          />
 
-        <button type="submit">
-          Add
-        </button>
-      </form>
+          <input
+            className="form-control"
+            placeholder="Product Description"
+            value={description}
+            onChange={(e) =>
+              setDescription(
+                e.target.value
+              )
+            }
+          />
+
+          <input
+            className="form-control"
+            placeholder="Image URL"
+            value={image}
+            onChange={(e) =>
+              setImage(e.target.value)
+            }
+          />
+
+          <input
+            className="form-control"
+            placeholder="Price"
+            type="number"
+            value={price}
+            onChange={(e) =>
+              setPrice(e.target.value)
+            }
+          />
+
+          <button
+            type="submit"
+            className="btn"
+          >
+            Add
+          </button>
+
+        </form>
+      </div>
 
       <h2>
-        Products: {products.length}
+        Products ({products.length})
       </h2>
 
-      <div className="row">
+      <div className="admin-products">
+
         {products.map((product) => (
           <div
-            className="col-12"
+            className="admin-product"
             key={product.id}
           >
+
             <div>
-              <Link to={`/products/${product.id}`}>
-                {product.name}
+              <h3>{product.name}</h3>
+
+              <p>
+                ₹{product.price}
+              </p>
+            </div>
+
+            <div className="admin-actions">
+
+              <Link
+                to={`/products/${product.id}`}
+                className="float-right btn"
+              >
+                Edit
               </Link>
 
               <button
-                className="float-right"
-                onClick={() => deleteProduct(product.id)}
+                className="float-right btn danger"
+                onClick={() =>
+                  deleteProduct(
+                    product.id
+                  )
+                }
               >
                 Delete
               </button>
 
-              <Link
-                className="float-right"
-                to={`/products/${product.id}?edit=true`}
-              >
-                Edit
-              </Link>
             </div>
+
           </div>
         ))}
+
       </div>
+
     </div>
   );
 }
